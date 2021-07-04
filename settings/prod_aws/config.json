@@ -1,0 +1,41 @@
+{
+  "server" : {
+    "port" : ":8080",
+    "mode" : "release",
+    "API_TYPE": "prod"
+  },
+  "cache" : {
+    "AEROSPIKE_DB": {
+      "SESSION": {
+        "hosts": [{"IP": "session-aerospike-01.prod.goibibo.com" , "PORT": 3000 },{"IP": "session-aerospike-02.prod.goibibo.com" , "PORT": 3000 }, {"IP": "session-aerospike-03.prod.goibibo.com", "PORT": 3000}],
+        "namespace" : "sessions",
+        "set": "django_aerospike_sessions",
+        "bin": "session_key"
+      },
+      "AUTH-TOKEN" : {
+        "hosts": [{"IP": "session-aerospike-01.prod.goibibo.com" , "PORT": 3000 },{"IP": "session-aerospike-02.prod.goibibo.com" , "PORT": 3000 }, {"IP": "session-aerospike-03.prod.goibibo.com", "PORT": 3000}],
+        "namespace" : "sessions",
+        "set": "accesstoken",
+        "bin": "user"
+      }
+    },
+
+    "BEST_SELLER_CACHE_SERVER": "hermes-redis.prod.goibibo.com:6379",
+    "BEST_SELLER_CACHE_DB": 1,
+    "BEST_SELLER_CACHE_EXPIRY": 86400
+  },
+  "spot": {
+    "BASE_URL" : "http://hotels-voyagerx-web.ecs.mmt/api/v1/hotels/",
+    "WAIT_TIME_SEC" : 1,
+    "HYSTRIX" : {
+      "COMMAND" : "mware_hystrix_spot",
+      "TIMEOUT_SEC" : 1.0,
+      "MAX_CONC_REQUESTS" : 2500,
+      "err_percent_plus_threshold" : 25
+    }
+  },
+  "bestsellercacher" : {
+    "RECORDS_COUNT" : 100000,
+    "TTL" : 3600
+  }
+}

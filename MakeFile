@@ -1,0 +1,13 @@
+
+MGSP_GENERATOR = $(GOBIN)/msgp
+ROOT_DIR=${PWD}
+
+GOPATH = ${ROOT_DIR}/vendor:${ROOT_DIR}
+
+default: fmt clean build
+
+build: vet
+	go build -v -o ./bin/mytube.bin
+
+run:
+	go run main.go

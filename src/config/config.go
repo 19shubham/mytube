@@ -13,7 +13,6 @@ import (
 // Use this directly across packages
 // NOT thread-safe
 // Access mutli-level config using . notation
-// e.g voyager.hystrix.timeout_sec
 var (
 	Environment *environments.Environment
 	Config      *viper.Viper

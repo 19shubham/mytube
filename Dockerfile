@@ -1,12 +1,10 @@
-RUN cd /tmp && \
- wget https://storage.googleapis.com/golang/go1.14.linux-amd64.tar.gz && \
- tar -C /usr/local -xzf go1.14.linux-amd64.tar.gz
+FROM golang:1.15.7-buster
 
 EXPOSE 80
 
 WORKDIR /usr/local/mytube
 
-ENV GOPATH=/usr/local/goibibo/mytube/vendor:/usr/local/mytube \
+ENV GOPATH=/usr/local/mytube/vendor:/usr/local/mytube \
     PATH=/usr/local/go/bin:${GOPATH}:${PATH}
 
 RUN rm -f /etc/localtime && \

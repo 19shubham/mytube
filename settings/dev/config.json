@@ -3,44 +3,5 @@
     "port" : ":8080",
     "mode" : "debug",
     "API_TYPE": "prod"
-  },
-  "cache" : {
-    "AEROSPIKE_DB": {
-      "SESSION": {
-        "hosts": [{"IP": "aerospike" , "PORT": 3000 }],
-        "namespace" : "sessions",
-        "set": "django_aerospike_sessions",
-        "bin": "session_key"
-      },
-      "AUTH-TOKEN" : {
-        "hosts": [{"IP": "aerospike", "PORT": 3000}],
-        "namespace" : "sessions",
-        "set": "accesstoken",
-        "bin": "user"
-      }
-    },
-
-    "PERSUASION_CACHE_SERVER": "redis:6379",
-    "PERSUASION_CACHE_DB":0,
-    "PERSUASION_DB_TIMEOUT":50,
-    "PERSUASION_INV_DB_TIMEOUT":120000,
-
-    "BEST_SELLER_CACHE_SERVER": "redis:6379",
-    "BEST_SELLER_CACHE_DB": 1,
-    "BEST_SELLER_CACHE_EXPIRY": 86400
-  },
-  "spot": {
-    "BASE_URL" : "http://hotels-voyagerx-web.ecs.mmt/api/v1/hotels/",
-    "WAIT_TIME_SEC" : 30,
-    "HYSTRIX" : {
-      "COMMAND" : "mware_hystrix_spot",
-      "TIMEOUT_SEC" : 10,
-      "MAX_CONC_REQUESTS" : 2500,
-      "err_percent_plus_threshold" : 25
-    }
-  },
-  "bestsellercacher" : {
-    "RECORDS_COUNT" : 100000,
-    "TTL" : 3600
   }
 }

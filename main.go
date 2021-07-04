@@ -18,19 +18,23 @@ import (
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/youtube/v3"
 
+	"Video_fetcher"
+	"apis"
 	"config"
 	"constants/enums/environments"
-	"youtube_fetch"
+	"cron"
+	"utils"
 )
+
+const missingClientSecretsMessage = `Please configure OAuth 2.0`
 
 var (
 	SERVER_PORT string
 	ENVIRONMENT string
 )
 
-// init gets called at the start of the file load and main function.
-// thus it becomes suitable for setting the environment of the
-// application.
+//init gets called at the start of the file load and main function. Thus it becomes suitable for setting the environment
+//of the application.
 func init() {
 
 	// setting the environment of the application
@@ -72,13 +76,6 @@ func setGinMode() {
 		gin.SetMode(gin.TestMode)
 	}
 }
-const missingClientSecretsMessage = `
-Please configure OAuth 2.0
-`
-
-var (
-	YtService *youtube.Service
-)
 
 // getClient uses a Context and Config to retrieve a Token
 // then generate a Client. It returns the generated Client.
@@ -152,15 +149,6 @@ func saveToken(file string, token *oauth2.Token) {
 	json.NewEncoder(f).Encode(token)
 }
 
-func handleError(err error, message string) {
-	if message == "" {
-		message = "Error making API call"
-	}
-	if err != nil {
-		log.Fatalf(message+": %v", err.Error())
-	}
-}
-
 func main() {
 
 	ctx := context.Background()
@@ -176,10 +164,11 @@ func main() {
 	}
 	client := getClient(ctx, authConfig)
 	var connectionErr error
-	YtService, connectionErr = youtube.New(client)
-	handleError(connectionErr, "Error creating YouTube client")
+	Video_fetcher.YtService, connectionErr = youtube.New(client)
+	utils.HandleError(connectionErr, "Error creating YouTube client")
 
 	mainRouter := gin.Default()
+
 	// Ping test
 	mainRouter.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
@@ -188,9 +177,16 @@ func main() {
 		c.String(http.StatusOK, "pong")
 	})
 
+	// for 1st time when server is up
+	Video_fetcher.FetchVideoData(Video_fetcher.YtService, []string{"snippet"}, true)
+
+	//crons for fetching data from youtube every 30 mins
+	cron.ScheduleCron()
+
+	mainRouter.GET("/mytube/search", apis.SearchVideo)
+
+	mainRouter.GET("/mytube/videos", apis.GetVideos)
+
 	//starts the server
 	mainRouter.Run("0.0.0.0" + SERVER_PORT)
-
-	data := youtube_fetch.FetchSearchData(YtService, []string{"snippet"})
-	fmt.Println("success", data)
 }

@@ -30,7 +30,7 @@ var (
 	}
 
 	Prod = Environment{
-		name: "prod",
+		name:         "prod",
 		isDocker:     true,
 		isProduction: true,
 	}

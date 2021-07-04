@@ -8,8 +8,8 @@ import (
 	"Video_fetcher"
 )
 
-//ScheduleCron -this will called FetchVideoData after every 30 mins and update inmemory cache of videos for predefined
-//query in constants
+//ScheduleCron -this will called FetchVideoData after every 30 minutes and update in-memory cache of videos for
+//predefined query in constants.
 func ScheduleCron() {
 	scheduler := cron.New()
 	_, err := scheduler.AddFunc("@every 30m", func() {

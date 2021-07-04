@@ -8,6 +8,7 @@ import (
 	"utils"
 )
 
+//getAllVideos - function will format response for all videos api.
 func getAllVideos(nextVId string) (result *AllVideoData) {
 	result = new(AllVideoData)
 	if len(Video_fetcher.StoredData) == 0 {
@@ -22,6 +23,7 @@ func getAllVideos(nextVId string) (result *AllVideoData) {
 	return getVideosFromNextVId(nextVId)
 }
 
+//getVideosFromNextVId - helper function for videos api to extract nextvid and do processing and combine response.
 func getVideosFromNextVId(nextVId string) (result *AllVideoData) {
 	result = new(AllVideoData)
 	var (
@@ -38,7 +40,7 @@ func getVideosFromNextVId(nextVId string) (result *AllVideoData) {
 			}
 		}
 	} else {
-		if success, vIDIndex := utils.IsValueInList(nextVId, Video_fetcher.OrderedVIds); success && vIDIndex > 0 {
+		if success, vIDIndex := utils.IsValueInList(nextVId, Video_fetcher.OrderedVIds); success {
 			var remainingVIdList = make([]string, 0, len(Video_fetcher.OrderedVIds))
 			remainingVIdList = Video_fetcher.OrderedVIds[vIDIndex:]
 			for index, vId := range remainingVIdList {
@@ -73,6 +75,7 @@ func getVideosFromNextVId(nextVId string) (result *AllVideoData) {
 	return
 }
 
+//getSearchedVideo - function will search video on the basis of user searched query and return if found.
 func getSearchedVideo(filter *Filter) (result *SearchedVideoData) {
 	result = new(SearchedVideoData)
 	if filter == nil || (filter.Title == "" && filter.Description == "" && filter.VideoId == "") {
@@ -104,6 +107,7 @@ func getSearchedVideo(filter *Filter) (result *SearchedVideoData) {
 	return result
 }
 
+//For sorting video list
 type PairList []*Video_fetcher.Video
 
 func (p PairList) Len() int           { return len(p) }

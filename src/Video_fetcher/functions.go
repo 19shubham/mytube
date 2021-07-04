@@ -10,11 +10,14 @@ import (
 )
 
 var (
-	YtService   *youtube.Service
-	StoredData  map[string]*Video
-	OrderedVIds []string
+	YtService   *youtube.Service  //global YtService variable
+	StoredData  map[string]*Video //global stored data map with key as video id
+	OrderedVIds []string          //sorted list of video id's by their published time in descending order
 )
 
+//FetchVideoData - main video fetcher which will call youtube api and return response with predefined search query
+//and order by date. Query can be changed in constants.QUERY_STRING. Currently it is being set to "cricket".
+//Max response size requested is 50 in one call, which also can be changed in constants.MAX_RESULT_SIZE.
 func FetchVideoData(service *youtube.Service, part []string, isFirstCall bool) {
 	if len(StoredData) == 0 {
 		StoredData = make(map[string]*Video)

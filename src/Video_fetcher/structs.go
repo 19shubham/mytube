@@ -1,5 +1,7 @@
 package Video_fetcher
 
+//Video - a struct for storing and using fields related to particular video. In this we have assumed videoId will be
+// unique for each video.
 type Video struct {
 	VideoId      string `json:"video_id"`
 	Title        string `json:"title"`

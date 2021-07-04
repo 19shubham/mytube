@@ -9,7 +9,7 @@ import (
 	"utils"
 )
 
-// GetVideos - this controller will return all cached videos in paginated form
+// GetVideos - this controller will return all cached videos in paginated form. Current page size is 10.
 func GetVideos(ginContext *gin.Context) {
 	serializer := utils.GetSerializer("json")
 	defer func() {
@@ -26,7 +26,7 @@ func GetVideos(ginContext *gin.Context) {
 	}
 }
 
-// SearchVideo - this controller will search cached video's data with user searched query string and return response
+// SearchVideo - this controller will search cached video's data with user searched query string and return response.
 func SearchVideo(ginContext *gin.Context) {
 	serializer := utils.GetSerializer("json")
 	defer func() {

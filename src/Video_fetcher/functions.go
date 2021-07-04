@@ -22,7 +22,15 @@ func FetchVideoData(service *youtube.Service, part []string, isFirstCall bool) {
 	if len(StoredData) == 0 {
 		StoredData = make(map[string]*Video)
 	}
-	call := service.Search.List(part, constants.QUERY_STRING, constants.ORDER_BY, constants.MAX_RESULT_SIZE, time.Now().String())
+	var then time.Time
+	now := time.Now()
+	if isFirstCall {
+		then = now.Add(time.Duration(-60) * time.Hour)
+	} else {
+		then = now.Add(time.Duration(-30) * time.Minute)
+	}
+	publishedAfter := then.Format("2006-01-02T15:04:05Z")
+	call := service.Search.List(part, constants.QUERY_STRING, constants.ORDER_BY, constants.MAX_RESULT_SIZE, publishedAfter)
 	response, err := call.Do()
 	utils.HandleError(err, "")
 	if response != nil {
